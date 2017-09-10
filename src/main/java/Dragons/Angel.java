@@ -7,9 +7,14 @@ import java.util.Random;
 
 public class Angel extends  Dragon {
     int HolyAttackCD=0;
-    int PrayCD=0;
-    int HolyArmCD=0;
+    int PrayCD=0; int PrayLast=0;
+    int HolyArmCD=0; int ArmLast=0;
     int MeditCD=0;
+    int LightBoltCD=5;
+    int LightGuardianCD=5; int LightGuardianLast=0;
+    int GodsMercyCd=5;
+    int HumbleValianceCD=5;
+    boolean LightGuard=false;
     public Angel(int LK) {
         hp=150*LK;
         frame=new JFrame(this.getClass().getSimpleName());
@@ -30,12 +35,17 @@ public class Angel extends  Dragon {
         double koef = (atack-enemy.defence)*0.05+1;
         if (koef<0.25) koef=0.25;
         if (koef>5) koef=5;
-        enemy.hp-=(ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck();
+        enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         if (enemy.hp<=0) throw new NullPointerException(this.getClass().getSimpleName());
         enemy.Counteratack(this);
         if (hp<=0) throw new NullPointerException(enemy.getClass().getSimpleName());
         GetHappy();
         enemy.CounterAtack=true;
+    }
+
+    @Override
+    public void GetDmg(int dm) {
+        hp-=dm;
     }
 
     public void Counteratack(Dragon enemy) {
@@ -44,7 +54,9 @@ public class Angel extends  Dragon {
             Random ran = new Random();
             double koef = (atack-enemy.defence)*0.05+1;
             if (koef<0.5) koef=0.5;
-            enemy.hp-=(ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck();
+            if (koef>5) koef=5;
+            enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
+            if (LightGuard) enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         }
     }
 
@@ -140,9 +152,16 @@ public class Angel extends  Dragon {
     }
 
     public void CD() {
+        LightBoltCD--;
+        LightGuardianCD--;
+        if (--LightGuardianLast==0) {LightGuard=false; LightGuardianLast=-10;}
+        HumbleValianceCD--;
+        GodsMercyCd--;
         HolyAttackCD--;
-        if (--HolyArmCD==2) defence-=30;
-        if (--PrayCD==1) {mindmg-=30; maxdmg-=19;}
+        HolyArmCD--;
+        if (--ArmLast==0) {defence-=30;ArmLast=10;}
+        PrayCD--;
+        if (--PrayLast==0) {mindmg-=30; maxdmg-=23; PrayLast=-10;}
         MeditCD--;
     }
 
@@ -159,10 +178,10 @@ public class Angel extends  Dragon {
                     "\n"; if (MeditCD>0) S+="медитация "+"заблокировано("+MeditCD+")"; else S+="8 - медитация";
                     S+="\n\n"+"100 - Информация"+"\n"+"101 - предыдущая страница"+"\n"+"102 - следующая страница";
             break;
-            case 3:S="Выберите действие("+page+"/"+"4):" + "\n\n"; if (HolyAttackCD>0) S+=" молния "+"заблокировано("+HolyAttackCD+")"+"\n"; else S+="9   -  молния"+
-                    "\n"; if (HolyArmCD>0) S+="смиренная доблесть "+"заблокировано("+HolyArmCD+")"+"\n"; else S+="10 - смиреная доблесть"+
-                    "\n"; if (PrayCD>0) S+="светлый страж "+"заблокировано("+PrayCD+")"+"\n"; else S+="11 - светлый страж"+
-                    "\n"; if (MeditCD>0) S+="божественная милость "+"заблокировано("+MeditCD+")"; else S+="12 - божественная милость";
+            case 3:S="Выберите действие("+page+"/"+"4):" + "\n\n"; if (LightBoltCD>0) S+="молния "+"заблокировано("+LightBoltCD+")"+"\n"; else S+="9   -  молния"+
+                    "\n"; if (HumbleValianceCD>0) S+="смиренная доблесть "+"заблокировано("+HumbleValianceCD+")"+"\n"; else S+="10 - смиреная доблесть"+
+                    "\n"; if (LightGuardianCD>0) S+="светлый страж "+"заблокировано("+LightGuardianCD+")"+"\n"; else S+="11 - светлый страж"+
+                    "\n"; if (GodsMercyCd>0) S+="божественная милость "+"заблокировано("+GodsMercyCd+")"; else S+="12 - божественная милость";
                 S+="\n\n"+"100 - Информация"+"\n"+"101 - предыдущая страница"+"\n"+"102 - следующая страница"; break;
             case 4:S="Empty Page("+page+"/4)"+"\n"+"\n"+"100 - Информация"+"\n"+"101 - предыдущая страница"; break;
             default : S="Error: page not found"; JOptionPane.showMessageDialog(frame,S);

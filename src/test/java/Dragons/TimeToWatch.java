@@ -73,8 +73,10 @@ public class TimeToWatch {
                                 D1.GetEmpoweredDefence(30);
                                 D1.Atack(D2);
                                 D2.Atack(D1);
+
                                 D1.CD();
                                 D1.HolyArmCD = 7;
+                                D1.ArmLast=4;
                             }
                             break;
                         case 7: //молитва: повышает урон на 5 раундов
@@ -83,6 +85,7 @@ public class TimeToWatch {
                                 D1.Atack(D2);
                                 D2.Atack(D1);
                                 D1.CD();
+                                D1.PrayLast=4;
                                 D1.PrayCD = 6;
                             }
                             break;
@@ -99,6 +102,10 @@ public class TimeToWatch {
                                 D1.MeditCD=7;
                             }
                             break;
+                        case 9: if (D1.LightBoltCD<1){D1.enemy.hp-=100*LK/3; D1.LightBoltCD=25; D1.HumbleValianceCD++; D1.LightGuardianCD++; D1.GodsMercyCd++;}break;
+                        case 10: if (D1.HumbleValianceCD<1) {D1.LightBoltCD++; D1.LightGuardianCD++; D1.GodsMercyCd++;D1.HumbleValianceCD=25;D1.CounterAtack=false;D1.enemy.Atack(D1);D1.enemy.Atack(D1);D1.enemy.Atack(D1); D1.GetEmpoweredHp(75+25*LK);D1.GetEmpoweredMinDmg(20);D1.GetMoreLuck(2);D1.GetMoreHappy(1);}break;
+                        case 11: if (D1.LightGuardianCD<1){ D1.HumbleValianceCD++; D1.LightBoltCD++; D1.GodsMercyCd++;D1.LightGuard=true; D1.LightGuardianCD=30; D1.LightGuardianLast=7;} break;
+                        case 12: if (D1.GodsMercyCd<1) { D1.ArmLast+=3;D1.LightGuardianLast+=3;D1.PrayLast+=3;D1.CD();D1.CD();D1.CD(); D1.GodsMercyCd=30;}break;
                         case 101: if (page!=0) page--; break;
                         case 102: if (page!=4) page++; break;
                         default:

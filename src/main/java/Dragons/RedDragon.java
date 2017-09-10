@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class RedDragon  extends Dragon {
 
-
+private int BlockChance=67;
 
     public RedDragon(int lifekoef) {
         hp=200*lifekoef;
@@ -40,7 +40,7 @@ Random ran=new Random();
 double koef = (atack-enemy.defence)*0.05+1;
 if (koef<0.25) koef=0.25;
         if (koef>5) koef=5;
-          enemy.hp-=(ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck();
+        enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         if (enemy.hp<=0) throw new NullPointerException(this.getClass().getSimpleName());
           enemy.Counteratack(this);
         if (hp<=0) throw new NullPointerException(enemy.getClass().getName());
@@ -48,6 +48,13 @@ if (koef<0.25) koef=0.25;
           enemy.CounterAtack=true;
     }
 
+    @Override
+    public void GetDmg(int dm) {
+        Random ran =new Random();
+        if (ran.nextInt(100)>BlockChance)
+        hp-=dm;
+        else hp-=dm/3;
+    }
 
 
     public void Counteratack(Dragon enemy) {
@@ -56,7 +63,8 @@ if (koef<0.25) koef=0.25;
             Random ran = new Random();
             double koef = (atack-enemy.defence)*0.05+1;
             if (koef<0.5) koef=0.5;
-            enemy.hp-=(ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck();
+            if (koef>5) koef=5;
+            enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         }
     }
 

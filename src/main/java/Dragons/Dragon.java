@@ -28,6 +28,7 @@ public abstract class Dragon {
     public abstract void CD () ;
     public abstract String GiveSetStr(int page);
     public abstract void Atack(Dragon enemy);
+    public abstract void GetDmg(int dm);
     public abstract  void Counteratack(Dragon enemy);
     public abstract double GetLuck();
     public abstract void GetHappy();
