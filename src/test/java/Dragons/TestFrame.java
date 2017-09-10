@@ -189,7 +189,15 @@ frame.pack();
 frame.setLocationRelativeTo(null);
 frame.setVisible(true);
 }
-
+public static void CreateExitFrame(){
+        JFrame frame=new JFrame("close");
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    frame.setPreferredSize(new Dimension(100, 100));
+//    frame.setLocation();
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+}
 
         public static void main(String[] args) {
 javax.swing.SwingUtilities.invokeLater(new Runnable() {

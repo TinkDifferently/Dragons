@@ -44,7 +44,4 @@ public class BlackDemon extends RedDragon {
       if ((hp<0.4*maxhp)&&(Fury==true)) FuryAtack();
         super.Atack(enemy);
     }
-    public void FrameUpd() {
-        frame=new JFrame(this.getClass().getSimpleName());
-    }
 }
