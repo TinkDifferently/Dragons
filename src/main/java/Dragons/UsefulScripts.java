@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class UsefulScripts {
+    public static int LK;
     public static Dimension labelSize = new Dimension(180, 20);
     public static Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
     public static Font font = new Font("Century Gothic", Font.PLAIN, 10);
