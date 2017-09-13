@@ -1,5 +1,6 @@
 package Dragons;
 
+import javafx.scene.control.TextInputDialog;
 import sun.net.www.content.text.Generic;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.*;
 public class DoubleWindow extends JOptionPane{
     public static int CreateNumber (String s){
         int i=0;
+
         try {
             i = Integer.valueOf(JOptionPane.showInputDialog(s));
         }

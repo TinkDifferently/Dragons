@@ -26,7 +26,7 @@ public class TimeToWatch {
         if (UsefulScripts.LK>30)UsefulScripts.LK=30;
                 Guards D1 = new Angel(UsefulScripts.LK);
                 D1.setLoc(420,80);
-                Monsters D2=new RedDragon(UsefulScripts.LK);
+                Monsters D2=new BlackDemon(UsefulScripts.LK);
                 D2.setLoc(820,80);
                 D1.enemy = D2;
                 D2.enemy = D1;

@@ -3,9 +3,8 @@ package Dragons;
 import javax.swing.*;
 import java.util.Random;
 
-public class BlackDemon extends RedDragon {
+public class BlackDemon extends Monsters {
   boolean Fury=true;
-   // private int maxhp;
 
     public BlackDemon(int lifekoef) {
       //  super(0);
@@ -18,34 +17,28 @@ public class BlackDemon extends RedDragon {
         maxdmg=75;
         luck=0;
         happy=1;
+        playType=MonsterTypeP.NonPlayeble;
         CounterAtack=true;
+        SA1="Fury Atack";
+        SA2="Curse";
     }
 
    // public BlackDemon() {
      //   super();
     //}
 
-    protected void FuryAtack(){ Fury = false; int i = atack; atack=defence+5; defence=i-3; enemy.hp-=enemy.hp*0.22;};
+    protected void FuryAtack(){ Fury = false; int i = atack; atack=defence+5; defence=i-3; enemy.hp-=enemy.hp*0.22; luck=3;}
+    protected void Curse(){      Random ran=new Random();
+        enemy.defence-=ran.nextInt(3);
+        enemy.atack-=ran.nextInt(3);
+        if (enemy.defence<-5) enemy.defence=-5;
+        if (enemy.atack<-5) enemy.atack=-5;}
 
-   /*public BlackDemon (int lifekoef)
-    {
-        hp=250;
-        maxhp=hp;
-        atack=14;
-        defence=31;
-        mindmg=16;
-        maxdmg=75;
-        luck=0;
-        happy=1;
-        CounterAtack=true;
-    }*/
+
     @Override
     public void Atack(Dragon enemy) {
       if ((hp<0.4*maxhp)&&(Fury==true)) FuryAtack();
+        Curse();
         super.Atack(enemy);
-    }
-    @Override
-    public void GetDmg(int dm) {
-        hp-=dm;
     }
 }

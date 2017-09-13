@@ -6,7 +6,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.Random;
 
-public class Angel extends  Dragon {
+public class Angel extends  Guards {
     int HolyAttackCD=0;
     int PrayCD=0; int PrayLast=0;
     int HolyArmCD=0; int ArmLast=0;
@@ -19,7 +19,6 @@ public class Angel extends  Dragon {
      String SignKey="";
     Boolean LightGuard=false;
     int LightGuardianLast=0;
-    JFrame frame=new JFrame(this.getClass().getSimpleName());
 
 
     public Angel(int LK){
@@ -32,7 +31,8 @@ public class Angel extends  Dragon {
         luck=1;
         happy=2;
         CounterAtack=true;
-
+        playType=MonsterTypeP.Playeble;
+        frame=new JFrame(this.getClass().getSimpleName());
     }
 
 
@@ -81,90 +81,127 @@ public class Angel extends  Dragon {
         else return 1;
     }
 
+    public boolean Action(int d) {
+        Random ran=new Random();
+        switch (d) {
+            case 1:GetEmpoweredAttack(ran.nextInt(7)+1); //вечное усиление атаки
+                Atack(enemy);
+                enemy.Atack(this);
+                CD();
+                return true;
+            case 2:GetEmpoweredDefence(ran.nextInt(5)+1); //вечное усиление защиты
+                Atack(enemy);
+                enemy.Atack(this);
+                CD();
+                return true;
+            case 3:GetMoreLuck(10); //100% удача
+                Atack(enemy);
+                enemy.Atack(this);
+                CD();
+                return true;
+            case 4:enemy.CounterAtack=false; //атака без ответа
+                Atack(enemy);
+                enemy.Atack(this);
+                CD();
+                return true;
+            case 5://Святой удар: атака игнорирует броню
+                if (HolyAttackCD<1){
+                    int b;
+                    b=enemy.defence; enemy.defence=0; Atack(enemy);
+                    enemy.Atack(this); enemy.defence=b;
+                    CD();
+                    HolyAttackCD=3; return true;} else return false;
+            case 6: //святая броня: повышает броню на 5 раундов
+                if (HolyArmCD<1) {
+                    GetEmpoweredDefence(30);
+                    Atack(enemy);
+                    enemy.Atack(this);
+
+                    CD();
+                    HolyArmCD = 7;
+                    ArmLast=3;
+                    return true;
+                } else return false;
+            case 7: //молитва: повышает урон на 5 раундов
+                if (PrayCD<1) {
+                    GetEmpoweredMinDmg(30);
+                    Atack(enemy);
+                    enemy.Atack(this);
+                    CD();
+                    PrayLast=4;
+                    PrayCD = 6;
+                    return true;
+                }
+                else return false;
+            case 8: // медитация: ангел пропускает ход, получает огромное лечение и броню на один ход
+                if (MeditCD<1) {
+                    GetHealed((ran.nextInt(75) + 25) * UsefulScripts.LK / 2 + 75);
+                    defence *= 3;
+                    CounterAtack = false;
+                    enemy.Atack(this);
+                    defence /= 3;
+                    CD();
+                    MeditCD=7; return true;
+                } else return false;
+            case 9: if (LightBoltCD<1) { //значительный урон противнику
+                enemy.hp -= 100 * UsefulScripts.LK / 3;
+                LightBoltCD = 25;
+                HumbleValianceCD++;
+                LightGuardianCD++;
+                GodsMercyCd++;
+                return true;
+            } else return false;
+            case 10: if (HumbleValianceCD<1) { //получение трех ударов и масштабное увеличение статов
+                LightBoltCD++;
+                LightGuardianCD++;
+                GodsMercyCd++;
+                HumbleValianceCD = 25;
+                CounterAtack = false;
+                enemy.Atack(this);
+                enemy.Atack(this);
+                enemy.Atack(this);
+                GetEmpoweredHp(75 + 25 * UsefulScripts.LK);
+                GetEmpoweredMinDmg(20);
+                GetMoreLuck(2);
+                GetMoreHappy(1);
+                return true;
+            }
+            else return false;
+            case 11: if (LightGuardianCD<1) { //дополнительная контратака
+                HumbleValianceCD++;
+                LightBoltCD++;
+                GodsMercyCd++;
+                LightGuard = true;
+                LightGuardianCD = 30;
+                LightGuardianLast = 7;
+                return true;
+            }
+            else return false;
+            case 12: if (GodsMercyCd<1) { // снижает кд кастов и особых умений
+                ArmLast += 3;
+                LightGuardianLast += 3;
+                PrayLast += 3;
+                SignCd += 3;
+                CD();
+                CD();
+                CD();
+                GodsMercyCd = 30;
+                return true;
+            } else return false;
+            case 13: if (SignCd<1) {SignActivate(1); return true; } else return false;
+            case 14: if (SignCd<1) {SignActivate(2); return true; } else return false;
+            case 15: if (SignCd<1) {SignActivate(3); return true; } else return false;
+            case 16: if (SignCd<1) {SignActivate(4); return true; } else return false;
+            default:
+                return false;
+        }
+    }
+
     public void GetHappy() {
         Random ran = new Random();
         int i = ran.nextInt(10) * happy;
         if (i > 10) this.Atack(enemy);
     }
-
-    public void FrameUpd() {
-        frame.dispose();
-        frame=new JFrame(this.getClass().getSimpleName());
-        Border panelBorder = BorderFactory.createLineBorder(Color.ORANGE, 1);
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        JPanel StatsPanel = new JPanel(new FlowLayout());
-        JPanel StatsPanel1 = new JPanel(StatsPanel.getLayout());
-        String s = "Attack"+atack;
-        int i=45;
-        i-=s.length();
-        String spaces="";
-        for (;i>0;i--)
-            spaces=spaces+" ";
-        JLabel LabA = new JLabel("Attack "+spaces+atack);
-        LabA=UsefulScripts.setLab(LabA);
-        s = "Defence"+this.defence;
-        i=42;
-        i-=s.length();
-        spaces="";
-        for (;i>0;i--)
-            spaces=spaces+" ";
-        JLabel LabD = new JLabel("Defence "+spaces+defence);
-        LabD=UsefulScripts.setLab(LabD);
-        s = "Damage "+mindmg+"-"+maxdmg;
-        i=40;
-        i-=s.length();
-        spaces="";
-        for (;i>0;i--)
-            spaces=spaces+" ";
-        JLabel LabDmg = new JLabel("Damage "+spaces+mindmg+"-"+maxdmg);
-        LabDmg=UsefulScripts.setLab(LabDmg);
-        s = "HP "+hp+"/"+maxhp;
-        i=44;
-        i-=s.length();
-        spaces="";
-        for (;i>0;i--)
-            spaces=spaces+" ";
-        JLabel LabHP = new JLabel("HP "+spaces+hp+"/"+maxhp);
-        LabHP=UsefulScripts.setLab(LabHP);
-        StatsPanel1.add(LabA);
-        StatsPanel1.add(LabD);
-        StatsPanel1.add(LabDmg);
-        StatsPanel1.add(LabHP);
-        mainPanel.add(StatsPanel1);
-        frame.setLocation(FramePosX,FramePosY);
-        frame.getContentPane().add(mainPanel);
-        frame.setPreferredSize(new Dimension(200, 300));
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public void GetHealed(int heal){
-        hp+=heal;
-    }
-    public void GetEmpoweredAttack(int att){
-        atack+=att;
-    }
-    public void GetEmpoweredDefence(int def){
-        defence+=def;
-    }
-    public void GetEmpoweredMinDmg(int md){
-        mindmg+=md;
-        if (maxdmg<mindmg) maxdmg=mindmg;
-    }
-    public void GetEmpoweredMaxDmg(int md){
-        maxdmg+=md;
-    }
-    public void GetEmpoweredHp(int HpPlus){
-        maxhp+=HpPlus;
-    }
-    public void GetMoreLuck(int Luck){
-        luck+=Luck;
-    }
-    public void GetMoreHappy(int morale){
-        happy+=morale;
-    }
-
     public void CD() {
         if (LightBoltCD>0)
         LightBoltCD--;
@@ -177,7 +214,7 @@ public class Angel extends  Dragon {
         GodsMercyCd--;
         HolyAttackCD--;
         HolyArmCD--;
-        if (--ArmLast==0) {defence-=30;ArmLast=10;}
+        if (--ArmLast==0) {defence-=30;ArmLast=-10;}
         PrayCD--;
         if (--PrayLast==0) {mindmg-=30; maxdmg-=23; PrayLast=-10;}
         MeditCD--;
