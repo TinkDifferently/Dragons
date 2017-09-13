@@ -18,9 +18,22 @@ class BlueDragon extends Monsters {
         happy=2;
         playType=MonsterTypeP.NonPlayeble;
         CounterAtack=true;
+        SA1="True dmg";
+        SA2="Active Defence";
     }
 
- //   public BlueDragon() {
+    @Override
+    public void Atack(Dragon enemy) {
+        enemy.GetDmg(10+2*UsefulScripts.LK);
+        super.Atack(enemy);
+    }
+
+    @Override
+    public void GetDmg(int dm) {
+        enemy.hp-=dm*0.2;
+        super.GetDmg(dm);
+    }
+    //   public BlueDragon() {
 //
   //  }
 
