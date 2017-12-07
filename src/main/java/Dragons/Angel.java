@@ -16,7 +16,7 @@ public class Angel extends  Guards {
     int LightGuardianCD=5;
     int HumbleValianceCD=5;
     int GodsMercyCd=5;
-     String SignKey="";
+  //   String SignKey="";
     Boolean LightGuard=false;
     int LightGuardianLast=0;
 
@@ -42,7 +42,7 @@ public class Angel extends  Guards {
         double koef = (atack-enemy.defence)*0.05+1;
         if (koef<0.25) koef=0.25;
         if (koef>5) koef=5;
-        if (SignKey!=null)            if (SignKey=="Thunder") koef*=1.1;
+        if (SignKey=="Thunder") koef*=1.1;
          enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         if (enemy.hp<=0) throw new NullPointerException(this.getClass().getSimpleName());
         enemy.Counteratack(this);
@@ -64,7 +64,7 @@ public class Angel extends  Guards {
             double koef = (atack-enemy.defence)*0.05+1;
             if (koef<0.5) koef=0.5;
             if (koef>5) koef=5;
-            if (SignKey!=null)            if (SignKey=="Thunder") koef*=1.1;
+            if (SignKey=="Thunder") koef*=1.1;
             enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
             if (LightGuard) enemy.GetDmg ((int) ((ran.nextInt(maxdmg-mindmg+1)+mindmg)*koef*GetLuck()));
         }

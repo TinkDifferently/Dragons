@@ -1,7 +1,9 @@
 package Dragons;
 
 import javafx.scene.control.TextInputDialog;
+import org.junit.jupiter.api.Test;
 import sun.net.www.content.text.Generic;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.swing.*;
 
@@ -28,5 +30,17 @@ public class DoubleWindow extends JOptionPane{
             default : S="Error: page not found"; JOptionPane.showMessageDialog(lab,S);
         }
         return S;
+    }
+    @Test
+    public void JFR (){
+        int a=0;
+        int b=1;
+        //JOptionPane.
+        //TextInputDialog D=new TextInputDialog();
+       // D.setContentText("abcdef");
+        //D.show();
+        //String s=D.getContentText().toString();
+        String s="";
+        assertThat(s.equals("abcdef"));
     }
 }

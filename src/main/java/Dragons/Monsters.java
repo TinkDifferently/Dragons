@@ -9,7 +9,6 @@ public class Monsters  extends Dragon{
     public String SA1;
     public String SA2;
     public void FrameUpd() {
-
         frame.dispose();
         frame=new JFrame(this.getClass().getSimpleName());
         Border panelBorder = BorderFactory.createLineBorder(Color.ORANGE, 1);

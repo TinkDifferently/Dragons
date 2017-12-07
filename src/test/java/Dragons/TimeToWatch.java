@@ -24,9 +24,17 @@ public class TimeToWatch {
         // TODO: 12.09.2017  set Guard(Type+stats(optional)); set enemy; text info; 
                 d=UsefulScripts.LK;//выход при нуле
         if (UsefulScripts.LK>30)UsefulScripts.LK=30;
-                Guards D1 = new Angel(UsefulScripts.LK);
+        if (d!=0)   d=DoubleWindow.CreateNumber("Set enemy" + "\n\n"+"1 - Red dragon (really many attacks and hard to kill)" +
+                "\n"+"2 - Black demon (huge curses and furious attacks)"+"\n"+"3 - Blue dragon (much undodjable dmg)"+"\n\n"+"\n"+"0-выход");
+                Guards D1 = new AncientTrent(UsefulScripts.LK);
                 D1.setLoc(420,80);
-                Monsters D2=new BlueDragon(UsefulScripts.LK);
+                Monsters D2;
+                switch (d) {
+                    case 1: D2 = new RedDragon(UsefulScripts.LK); break;
+                    case 2: D2 = new BlackDemon(UsefulScripts.LK); break;
+                    case 3: D2 = new BlueDragon(UsefulScripts.LK); break;
+                    default: D2=new Monsters(); break;
+                }
                 D2.setLoc(820,80);
                 D1.enemy = D2;
                 D2.enemy = D1;

@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.Random;
 
 public abstract class Guards extends Dragon {
+    String SignKey="None";
     public abstract void CD();
 
     public abstract String GiveSetStr(int page);
@@ -92,10 +93,13 @@ public abstract class Guards extends Dragon {
             spaces=spaces+" ";
         JLabel LabHP = new JLabel("HP "+spaces+hp+"/"+maxhp);
         LabHP=UsefulScripts.setLab(LabHP);
+        JLabel LabSign = new JLabel(SignKey);
+        LabSign=UsefulScripts.setLab(LabSign);
         StatsPanel1.add(LabA);
         StatsPanel1.add(LabD);
         StatsPanel1.add(LabDmg);
         StatsPanel1.add(LabHP);
+        StatsPanel1.add(LabSign);
         mainPanel.add(StatsPanel1);
         frame.setLocation(FramePosX,FramePosY);
         frame.getContentPane().add(mainPanel);
